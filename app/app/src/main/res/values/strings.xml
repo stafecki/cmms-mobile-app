@@ -1,3 +1,29 @@
 <resources>
-    <string name="app_name">cmms</string>
+    <string name="app_name">CMMS</string>
+    <string name="login_hint">Email</string>
+    <string name="password_hint">Hasło</string>
+    <string name="btn_login">Zaloguj</string>
+    <string name="error_invalid_email">Błędny format email</string>
+    <string name="status_new">NOWE</string>
+    <string name="status_in_progress">W TOKU</string>
+    <string name="status_completed">GOTOWE</string>
+
+    <string name="dashboard_title">Dashboard Statystyki</string>
+    <string name="label_open_jobs">Otwarte zlecenia</string>
+    <string name="label_critical_jobs">Krytyczne awarie</string>
+    <string name="label_upcoming_maintenance">Nadchodzące przeglądy</string>
+
+    <string name="dummy_count_12">12</string>
+    <string name="dummy_count_3">3</string>
+    <string name="dummy_count_8">8</string>
+
+    <string name="title_machines">Lista maszyn</string>
+    <string name="search_hint">Wyszukaj po nazwie...</string>
+    <string name="empty_list_message">Brak maszyn do wyświetlenia</string>
+    <string name="machine_serial_label">S/N: </string>
+
+    <string name="error_empty_field">To pole nie może być puste</string>
+    <string name="error_wrong_credentials">Błędny email lub hasło</string>
+
+    <string name="label_recent_jobs">Ostatnie zlecenia</string>
 </resources>
