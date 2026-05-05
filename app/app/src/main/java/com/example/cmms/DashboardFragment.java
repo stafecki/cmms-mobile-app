@@ -3,10 +3,13 @@ package com.example.cmms;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,5 +63,36 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        DashboardViewModel viewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+
+        viewModel.getOpenJobsCount().observe(getViewLifecycleOwner(), count -> {
+            TextView tvCount = view.findViewById(R.id.tvOpenJobsCount);
+            if (tvCount != null) {
+                tvCount.setText(String.valueOf(count));
+            }
+        });
+
+        viewModel.getCriticalJobsCount().observe(getViewLifecycleOwner(), count -> {
+            TextView tvCritical = view.findViewById(R.id.tvCriticalJobsCount);
+            if(tvCritical != null){
+                tvCritical.setText(String.valueOf(count));
+            }
+        });
+
+        viewModel.loadDashboardData();
+
+        SwipeRefreshLayout swipe = view.findViewById(R.id.main);
+        if(swipe != null) {
+            swipe.setOnRefreshListener(() -> {
+                viewModel.loadDashboardData();
+                swipe.setRefreshing(false);
+            });
+        }
     }
 }
