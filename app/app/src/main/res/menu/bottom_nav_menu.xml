@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dashboardFragment"
+        android:title="Dashboard"
+        android:icon="@drawable/baseline_dashboard_24" />
+
+    <item
+        android:id="@+id/machineListFragment"
+        android:title="Machine List Fragment"
+        android:icon="@drawable/outline_build_24" />
+
+    <item
+        android:id="@+id/workOrderListFragment"
+        android:title="Work Order List"
+        android:icon="@drawable/outline_assignment_24" />
+
+    <item
+        android:id="@+id/notificationsFragment"
+        android:title="Powiadomienia"
+        android:icon="@drawable/outline_circle_notifications_24" />
+
+    <item
+        android:id="@+id/profileFragment"
+        android:title="Profile"
+        android:icon="@drawable/outline_article_person_24" />
+
+</menu>

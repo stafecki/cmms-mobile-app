@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.cmms.DashboardFragment"
+        android:label="Dashboard" />
+
+    <fragment
+        android:id="@+id/machineListFragment"
+        android:name="com.example.cmms.MachineListFragment"
+        android:label="Machine List" />
+
+    <fragment
+        android:id="@+id/workOrderListFragment"
+        android:name="com.example.cmms.WorkOrderListFragment"
+        android:label="Work Order List" />
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.cmms.NotificationsFragment"
+        android:label="Notifications"/>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.cmms.ProfileFragment"
+        android:label="Profile" />
+
+
+
+</navigation>

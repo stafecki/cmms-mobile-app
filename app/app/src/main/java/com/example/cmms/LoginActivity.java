@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (email.equals("admin@cmms.pl") && password.equals("admin123")) {
-            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         } else {

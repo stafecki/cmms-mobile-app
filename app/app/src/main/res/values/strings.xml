@@ -26,4 +26,6 @@
     <string name="error_wrong_credentials">Błędny email lub hasło</string>
 
     <string name="label_recent_jobs">Ostatnie zlecenia</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
