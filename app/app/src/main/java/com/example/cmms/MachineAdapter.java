@@ -35,6 +35,15 @@ public class MachineAdapter extends RecyclerView.Adapter<MachineAdapter.MachineV
         notifyDataSetChanged();
     }
 
+    public interface onMachineClickListener{
+        void onMachineClick(String machineName);
+    }
+
+    private onMachineClickListener listener;
+    public MachineAdapter(onMachineClickListener listener){
+        this.listener = listener;
+    }
+
     @NonNull
     @Override
     public MachineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,6 +54,9 @@ public class MachineAdapter extends RecyclerView.Adapter<MachineAdapter.MachineV
     @Override
     public void onBindViewHolder(@NonNull MachineViewHolder holder, int position) {
         holder.tvMachineName.setText(machineListDisplayed.get(position));
+        holder.itemView.setOnClickListener(view -> {
+            listener.onMachineClick(machineListDisplayed.get(position));
+        });
     }
 
     @Override

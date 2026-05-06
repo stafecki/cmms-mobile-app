@@ -3,10 +3,17 @@ package com.example.cmms;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +30,11 @@ public class MachineListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private MachineViewModel viewModel;
+    private MachineAdapter adapter;
+    private RecyclerView recyclerView;
+    private TextView emptyView;
 
     public MachineListFragment() {
         // Required empty public constructor
@@ -59,6 +71,58 @@ public class MachineListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_machine, container, false);
+        return inflater.inflate(R.layout.fragment_machine_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView = view.findViewById(R.id.rv_machines);
+        emptyView = view.findViewById(R.id.tv_empty_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new MachineAdapter(machineName -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_machineListFragment_to_machineDetailsFragment);
+        });
+        recyclerView.setAdapter(adapter);
+
+        viewModel = new ViewModelProvider(this).get(MachineViewModel.class);
+
+        android.widget.EditText etSearch = view.findViewById(R.id.et_search);
+        etSearch.addTextChangedListener(new android.text.TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(adapter != null){
+                    adapter.filter(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
+
+        viewModel.getMachines().observe(getViewLifecycleOwner(), machines -> {
+            if(machines == null || machines.isEmpty()){
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+            }else{
+                recyclerView.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
+                adapter.setMachines(machines);
+            }
+        });
+
+        SwipeRefreshLayout swipe = view.findViewById(R.id.main);
+        if(swipe != null) {
+            swipe.setOnRefreshListener(() -> {
+                viewModel.refreshMachines();
+                swipe.setRefreshing(false);
+            });
+        }
     }
 }

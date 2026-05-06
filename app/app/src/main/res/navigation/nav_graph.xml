@@ -12,7 +12,13 @@
     <fragment
         android:id="@+id/machineListFragment"
         android:name="com.example.cmms.MachineListFragment"
-        android:label="Machine List" />
+        android:label="Machine List">
+
+        <action
+            android:id="@+id/action_machineListFragment_to_machineDetailsFragment"
+            app:destination="@id/machineDetailsFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/workOrderListFragment"
@@ -28,6 +34,12 @@
         android:id="@+id/profileFragment"
         android:name="com.example.cmms.ProfileFragment"
         android:label="Profile" />
+
+    <fragment
+        android:id="@+id/machineDetailsFragment"
+        android:name="com.example.cmms.MachineDetailsFragment"
+        android:label="Machine Details" >
+    </fragment>
 
 
 

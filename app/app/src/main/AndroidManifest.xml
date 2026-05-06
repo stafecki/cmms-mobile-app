@@ -17,12 +17,6 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".MachineDetailsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MachineListActivity"
-            android:exported="false" />
-        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
