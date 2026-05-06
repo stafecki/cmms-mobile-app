@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/machineListFragment"
-        android:title="Machine List Fragment"
+        android:title="Machine List"
         android:icon="@drawable/outline_build_24" />
 
     <item

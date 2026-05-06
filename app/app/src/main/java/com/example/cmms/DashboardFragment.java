@@ -85,6 +85,13 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        viewModel.getUpcomingMaintenanceCount().observe(getViewLifecycleOwner(), count -> {
+            TextView tvUpcoming = view.findViewById(R.id.tvUpcomingMaintenanceCount);
+            if(tvUpcoming != null){
+                tvUpcoming.setText(String.valueOf(count));
+            }
+        });
+
         viewModel.loadDashboardData();
 
         SwipeRefreshLayout swipe = view.findViewById(R.id.main);
