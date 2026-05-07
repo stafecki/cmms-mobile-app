@@ -3,6 +3,7 @@ package com.example.cmms;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ public class WorkOrderDetailsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private WorkOrderDetailsViewModel viewModel;
+
 
     public WorkOrderDetailsFragment() {
         // Required empty public constructor
@@ -70,15 +73,20 @@ public class WorkOrderDetailsFragment extends Fragment {
         TextView tvDescription = view.findViewById(R.id.tv_work_order_details_description);
         TextView tvPriority = view.findViewById(R.id.tv_work_order_details_priority);
         TextView tvStatus = view.findViewById(R.id.tv_work_order_details_status);
-        TextView tvWorker = view.findViewById(R.id.tv_work_order_details_worker);
+        TextView tvWorker = view.findViewById(R.id.tv_work_order_details_technicianName);
+        TextView tvMachine = view.findViewById(R.id.tv_work_order_details_machine);
         TextView tvParts = view.findViewById(R.id.tv_work_order_details_parts);
 
-        Bundle bundle = getArguments();
-        if(bundle != null){
-            tvTitle.setText(bundle.getString("title"));
-            tvDescription.setText(bundle.getString("description"));
-            tvPriority.setText(bundle.getString("priority"));
-            tvStatus.setText(bundle.getString("status"));
-        }
+        viewModel = new ViewModelProvider(this).get(WorkOrderDetailsViewModel.class);
+
+        viewModel.getTitle().observe(getViewLifecycleOwner(), tvTitle::setText);
+        viewModel.getDescription().observe(getViewLifecycleOwner(), tvDescription::setText);
+        viewModel.getPriority().observe(getViewLifecycleOwner(), tvPriority::setText);
+        viewModel.getStatus().observe(getViewLifecycleOwner(), tvStatus::setText);
+        viewModel.getTechnicianName().observe(getViewLifecycleOwner(), tvWorker::setText);
+        viewModel.getMachine().observe(getViewLifecycleOwner(), tvMachine::setText);
+        viewModel.getParts().observe(getViewLifecycleOwner(), tvParts::setText);
+
+        viewModel.loadWorkOrderDetails();
     }
 }
