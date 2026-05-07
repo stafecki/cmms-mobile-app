@@ -6,122 +6,221 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/padding_standard">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dashboard_title"
-                android:textSize="@dimen/text_size_title"
-                android:textStyle="bold"
-                android:layout_marginBottom="@dimen/margin_bottom_title"
-                android:textColor="@color/black" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardOpenJobs"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_card"
-                app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardElevation="@dimen/card_elevation">
+                android:orientation="vertical"
+                android:background="@drawable/bg_header_dark"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="48dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CMMS"
+                    android:textSize="11sp"
+                    android:textColor="#9E9990"
+                    android:letterSpacing="0.18"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_title"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/oat"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="-24dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:textColor="@color/grey_text"
+                    android:letterSpacing="0.14"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="4dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_standard">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_open_jobs"
-                        android:textSize="14sp"
-                        android:textColor="@color/grey_text" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardOpenJobs"
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp"
+                        app:cardBackgroundColor="@color/white">
 
-                    <TextView
-                        android:id="@+id/tvOpenJobsCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dummy_count_12"
-                        android:textSize="@dimen/text_size_count"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_brand" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
+                            <View
+                                android:layout_width="28dp"
+                                android:layout_height="3dp"
+                                android:background="@color/black"
+                                android:layout_marginBottom="12dp"/>
+
+                            <TextView
+                                android:id="@+id/tvOpenJobsCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="—"
+                                android:textSize="44sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/noir"
+                                android:includeFontPadding="false"
+                                android:layout_marginBottom="6dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_open_jobs"
+                                android:textSize="12sp"
+                                android:textColor="@color/grey_text"
+                                android:maxLines="2"/>
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="1dp"/>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardCriticalJobs"
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp"
+                        app:cardBackgroundColor="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
+
+                            <View
+                                android:layout_width="28dp"
+                                android:layout_height="3dp"
+                                android:background="@color/critical_text"
+                                android:layout_marginBottom="12dp"/>
+
+                            <TextView
+                                android:id="@+id/tvCriticalJobsCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="—"
+                                android:textSize="44sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/critical_text"
+                                android:includeFontPadding="false"
+                                android:layout_marginBottom="6dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_critical_jobs"
+                                android:textSize="12sp"
+                                android:textColor="@color/critical_text"
+                                android:alpha="0.75"
+                                android:maxLines="2"/>
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardCriticalJobs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_card"
-                app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardElevation="@dimen/card_elevation"
-                app:cardBackgroundColor="@color/critical_bg">
-
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardUpcomingMaintenance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_standard">
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp"
+                    app:cardBackgroundColor="@color/noir">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_critical_jobs"
-                        android:textSize="14sp"
-                        android:textColor="@color/critical_text" />
+                        android:orientation="horizontal"
+                        android:padding="24dp"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvCriticalJobsCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dummy_count_3"
-                        android:textSize="@dimen/text_size_count"
-                        android:textStyle="bold"
-                        android:textColor="@color/critical_text" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardUpcomingMaintenance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_bottom_card"
-                app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardElevation="@dimen/card_elevation">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_upcoming_maintenance"
+                                android:textSize="12sp"
+                                android:textColor="#9E9990"
+                                android:layout_marginBottom="6dp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_standard">
+                            <TextView
+                                android:id="@+id/tvUpcomingMaintenanceCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="—"
+                                android:textSize="44sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/oat"
+                                android:includeFontPadding="false"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_upcoming_maintenance"
-                        android:textSize="14sp"
-                        android:textColor="@color/grey_text" />
+                        </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tvUpcomingMaintenanceCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dummy_count_8"
-                        android:textSize="@dimen/text_size_count"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/outline_build_24"
+                            android:alpha="0.35"
+                            app:tint="@color/oat"
+                            android:scaleType="fitCenter"
+                            android:contentDescription="@null"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
