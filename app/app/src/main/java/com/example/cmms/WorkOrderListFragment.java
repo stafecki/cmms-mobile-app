@@ -89,10 +89,14 @@ public class WorkOrderListFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new WorkOrderAdapter(workOrder -> {
-//            NavController navController = Navigation.findNavController(view);
-//            navController.navigate(R.id.action_workOrderListFragment_to_workOrderDetailsFragment);
-            //tymczasowo:
-            Toast.makeText(requireContext(), "Work order clicked: " + workOrder.getTitle(), Toast.LENGTH_SHORT).show();
+            Bundle bundle = new Bundle();
+            bundle.putString("title", workOrder.getTitle());
+            bundle.putString("description", workOrder.getDescription());
+            bundle.putString("priority", workOrder.getPriority());
+            bundle.putString("Status", workOrder.getStatus());
+
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_workOrderListFragment_to_workOrderDetailsFragment, bundle);
         });
         recyclerView.setAdapter(adapter);
 

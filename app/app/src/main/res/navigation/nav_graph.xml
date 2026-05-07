@@ -23,7 +23,13 @@
     <fragment
         android:id="@+id/workOrderListFragment"
         android:name="com.example.cmms.WorkOrderListFragment"
-        android:label="Work Order List" />
+        android:label="Work Order List" >
+
+        <action
+            android:id="@+id/action_workOrderListFragment_to_workOrderDetailsFragment"
+            app:destination="@id/workOrderDetailsFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/notificationsFragment"
@@ -40,6 +46,11 @@
         android:name="com.example.cmms.MachineDetailsFragment"
         android:label="Machine Details" >
     </fragment>
+
+    <fragment
+        android:id="@+id/workOrderDetailsFragment"
+        android:name="com.example.cmms.WorkOrderDetailsFragment"
+        android:label="Work Order Details"/>
 
 
 
