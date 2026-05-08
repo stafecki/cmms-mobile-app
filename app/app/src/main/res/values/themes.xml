@@ -1,9 +1,34 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Cmms" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/noir</item>
+        <item name="colorOnPrimary">@color/oat</item>
+        <item name="colorPrimaryContainer">@color/darker_oat</item>
+        <item name="colorOnPrimaryContainer">@color/noir</item>
+        <item name="colorSecondary">@color/darker_oat</item>
+        <item name="colorOnSecondary">@color/noir</item>
+        <item name="android:colorBackground">@color/oat</item>
+        <item name="colorOnBackground">@color/noir</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/noir</item>
+        <item name="colorSurfaceVariant">@color/darker_oat</item>
+        <item name="colorOnSurfaceVariant">@color/grey_text</item>
+        <item name="colorSecondaryContainer">@color/darker_oat</item>
+        <item name="colorOnSecondaryContainer">@color/noir</item>
+        <item name="android:windowBackground">@color/oat</item>
+        <item name="colorControlHighlight">@color/oat_hover</item>
     </style>
 
     <style name="Theme.Cmms" parent="Base.Theme.Cmms" />
+
+    <style name="ThemeOverlay.Cmms.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlNormal">@color/oat</item>
+        <item name="android:textColorPrimary">@color/oat</item>
+    </style>
+
+    <style name="ToolbarTitleStyle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/oat</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
 </resources>

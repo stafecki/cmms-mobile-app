@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="oat">#F0EDE5</color>
+    <color name="darker_oat">#E2D9C8</color>
+    <color name="oat_hover">#E8E3D9</color>
+    <color name="noir">#060D0C</color>
+
+    <color name="grey_text">#8A8278</color>
+
+    <color name="critical_bg">#FEE2E2</color>
+    <color name="critical_text">#DC2626</color>
+
+    <color name="status_new_bg">#DBEAFE</color>
+    <color name="status_new_text">#1D4ED8</color>
+    <color name="status_in_progress_bg">#FEF3C7</color>
+    <color name="status_in_progress_text">#B45309</color>
+    <color name="status_completed_bg">#D1FAE5</color>
+    <color name="status_completed_text">#059669</color>
+
+    <color name="primary_brand">#060D0C</color>
 </resources>

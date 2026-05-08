@@ -1,3 +1,59 @@
 <resources>
-    <string name="app_name">cmms</string>
+    <string name="app_name">CMMS</string>
+    <string name="login_hint">Email</string>
+    <string name="password_hint">Hasło</string>
+    <string name="btn_login">Zaloguj</string>
+    <string name="error_invalid_email">Błędny format email</string>
+    <string name="status_new">NOWE</string>
+    <string name="status_in_progress">W TOKU</string>
+    <string name="status_completed">GOTOWE</string>
+
+    <string name="dashboard_title">Dashboard Statystyki</string>
+    <string name="label_open_jobs">Otwarte zlecenia</string>
+    <string name="label_critical_jobs">Krytyczne awarie</string>
+    <string name="label_upcoming_maintenance">Nadchodzące przeglądy</string>
+
+    <string name="dummy_count_12">12</string>
+    <string name="dummy_count_3">3</string>
+    <string name="dummy_count_8">8</string>
+
+    <string name="title_machines">Lista maszyn</string>
+    <string name="search_hint">Wyszukaj po nazwie...</string>
+    <string name="empty_list_message">Brak maszyn do wyświetlenia</string>
+    <string name="machine_serial_label">S/N: </string>
+
+    <string name="error_empty_field">To pole nie może być puste</string>
+    <string name="error_wrong_credentials">Błędny email lub hasło</string>
+
+    <string name="label_recent_jobs">Ostatnie zlecenia</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="nav_dashboard">Panel</string>
+    <string name="nav_machines">Maszyny</string>
+    <string name="nav_work_orders">Zlecenia</string>
+    <string name="nav_notifications">Powiadomienia</string>
+    <string name="nav_profile">Profil</string>
+    <string name="nav_label_machine_details">Szczegóły maszyny</string>
+    <string name="nav_label_work_order_details">Szczegóły zlecenia</string>
+
+    <string name="login_welcome">Witaj z powrotem</string>
+    <string name="login_subtitle">Zaloguj się, aby kontynuować</string>
+
+    <string name="title_work_orders">Zlecenia</string>
+    <string name="chip_filter_all">Wszystkie</string>
+    <string name="chip_filter_new">Nowe</string>
+    <string name="chip_filter_in_progress">W toku</string>
+    <string name="chip_filter_completed">Gotowe</string>
+
+    <string name="label_serial_number">Numer seryjny</string>
+    <string name="label_location">Lokalizacja</string>
+    <string name="label_working_hours">Godziny pracy</string>
+    <string name="label_status">Status</string>
+    <string name="label_priority">Priorytet</string>
+    <string name="label_description">Opis</string>
+    <string name="label_machine">Maszyna</string>
+    <string name="label_technician">Technik</string>
+    <string name="label_parts">Części</string>
+    <string name="label_priority_prefix">Priorytet: </string>
 </resources>

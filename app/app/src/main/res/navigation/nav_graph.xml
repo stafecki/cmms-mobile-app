@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.cmms.DashboardFragment"
+        android:label="@string/nav_dashboard" />
+
+    <fragment
+        android:id="@+id/machineListFragment"
+        android:name="com.example.cmms.MachineListFragment"
+        android:label="@string/nav_machines">
+
+        <action
+            android:id="@+id/action_machineListFragment_to_machineDetailsFragment"
+            app:destination="@id/machineDetailsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/workOrderListFragment"
+        android:name="com.example.cmms.WorkOrderListFragment"
+        android:label="@string/nav_work_orders">
+
+        <action
+            android:id="@+id/action_workOrderListFragment_to_workOrderDetailsFragment"
+            app:destination="@id/workOrderDetailsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.cmms.NotificationsFragment"
+        android:label="@string/nav_notifications"/>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.cmms.ProfileFragment"
+        android:label="@string/nav_profile" />
+
+    <fragment
+        android:id="@+id/machineDetailsFragment"
+        android:name="com.example.cmms.MachineDetailsFragment"
+        android:label="@string/nav_label_machine_details">
+    </fragment>
+
+    <fragment
+        android:id="@+id/workOrderDetailsFragment"
+        android:name="com.example.cmms.WorkOrderDetailsFragment"
+        android:label="@string/nav_label_work_order_details"/>
+
+
+
+</navigation>
