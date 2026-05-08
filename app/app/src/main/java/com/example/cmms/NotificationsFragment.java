@@ -3,10 +3,15 @@ package com.example.cmms;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +28,11 @@ public class NotificationsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private NotificationsViewModel viewModel;
+    private NotificationsAdapter adapter;
+    private RecyclerView recyclerView;
+    private TextView emptyView;
+
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -61,4 +71,37 @@ public class NotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_notifications, container, false);
     }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView = view.findViewById(R.id.rv_notifications);
+        emptyView = view.findViewById(R.id.tv_empty_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        adapter = new NotificationsAdapter();
+        recyclerView.setAdapter(adapter);
+
+        viewModel = new ViewModelProvider(this).get(NotificationsViewModel.class);
+        viewModel.getNotifications().observe(getViewLifecycleOwner(), notifications -> {
+            if(notifications == null || notifications.isEmpty()){
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+            }else{
+                recyclerView.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
+                adapter.setNotifications(notifications);
+            }
+        });
+
+        SwipeRefreshLayout swipe = view.findViewById(R.id.main);
+        if (swipe != null){
+            swipe.setOnRefreshListener(() -> {
+                viewModel.refreshNotifications();
+                swipe.setRefreshing(false);
+            });
+        }
+    }
+
 }
