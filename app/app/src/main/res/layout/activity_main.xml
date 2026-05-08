@@ -15,9 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/noir"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:titleTextColor="@color/oat"
-        app:subtitleTextColor="@color/grey_text"/>
+        android:theme="@style/ThemeOverlay.Cmms.Toolbar"
+        app:titleTextAppearance="@style/ToolbarTitleStyle"
+        app:subtitleTextColor="@color/grey_text"
+        app:navigationIcon="@drawable/ic_arrow_back_24"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"

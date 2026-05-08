@@ -28,4 +28,32 @@
     <string name="label_recent_jobs">Ostatnie zlecenia</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="nav_dashboard">Panel</string>
+    <string name="nav_machines">Maszyny</string>
+    <string name="nav_work_orders">Zlecenia</string>
+    <string name="nav_notifications">Powiadomienia</string>
+    <string name="nav_profile">Profil</string>
+    <string name="nav_label_machine_details">Szczegóły maszyny</string>
+    <string name="nav_label_work_order_details">Szczegóły zlecenia</string>
+
+    <string name="login_welcome">Witaj z powrotem</string>
+    <string name="login_subtitle">Zaloguj się, aby kontynuować</string>
+
+    <string name="title_work_orders">Zlecenia</string>
+    <string name="chip_filter_all">Wszystkie</string>
+    <string name="chip_filter_new">Nowe</string>
+    <string name="chip_filter_in_progress">W toku</string>
+    <string name="chip_filter_completed">Gotowe</string>
+
+    <string name="label_serial_number">Numer seryjny</string>
+    <string name="label_location">Lokalizacja</string>
+    <string name="label_working_hours">Godziny pracy</string>
+    <string name="label_status">Status</string>
+    <string name="label_priority">Priorytet</string>
+    <string name="label_description">Opis</string>
+    <string name="label_machine">Maszyna</string>
+    <string name="label_technician">Technik</string>
+    <string name="label_parts">Części</string>
+    <string name="label_priority_prefix">Priorytet: </string>
 </resources>

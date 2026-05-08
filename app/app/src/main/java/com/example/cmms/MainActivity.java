@@ -50,10 +50,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.machineDetailsFragment) {
+            if (destination.getId() == R.id.machineDetailsFragment || destination.getId() == R.id.workOrderDetailsFragment) {
                 bottomNav.setVisibility(View.GONE);
+                getSupportActionBar().show();
             } else {
                 bottomNav.setVisibility(View.VISIBLE);
+                getSupportActionBar().hide();
             }
         });
 

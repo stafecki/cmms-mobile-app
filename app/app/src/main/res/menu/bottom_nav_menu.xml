@@ -3,27 +3,27 @@
 
     <item
         android:id="@+id/dashboardFragment"
-        android:title="Dashboard"
+        android:title="@string/nav_dashboard"
         android:icon="@drawable/baseline_dashboard_24" />
 
     <item
         android:id="@+id/machineListFragment"
-        android:title="Machine List"
+        android:title="@string/nav_machines"
         android:icon="@drawable/outline_build_24" />
 
     <item
         android:id="@+id/workOrderListFragment"
-        android:title="Work Order List"
+        android:title="@string/nav_work_orders"
         android:icon="@drawable/outline_assignment_24" />
 
     <item
         android:id="@+id/notificationsFragment"
-        android:title="Notifications"
+        android:title="@string/nav_notifications"
         android:icon="@drawable/outline_circle_notifications_24" />
 
     <item
         android:id="@+id/profileFragment"
-        android:title="Profile"
+        android:title="@string/nav_profile"
         android:icon="@drawable/outline_article_person_24" />
 
 </menu>
