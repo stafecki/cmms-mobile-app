@@ -22,4 +22,6 @@
 
     <color name="primary_brand">#060D0C</color>
 
+    <color name="notification_unread_bg">#FFFFFF</color>
+    <color name="notification_read_bg">#E8E3D9</color>
 </resources>

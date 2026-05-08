@@ -6,7 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
@@ -33,10 +36,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.tvDate.setText(notification.getDate());
         holder.tvMessage.setText(notification.getMessage());
 
+        MaterialCardView card = (MaterialCardView) holder.itemView;
         if (notification.getIsRead()) {
-            holder.itemView.setBackgroundResource(R.color.white);
+            card.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.notification_read_bg));
+            holder.viewUnreadIndicator.setVisibility(View.GONE);
         } else {
-            holder.itemView.setBackgroundResource(R.color.darker_oat);
+            card.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.notification_unread_bg));
+            holder.viewUnreadIndicator.setVisibility(View.VISIBLE);
         }
     }
 
@@ -49,12 +55,14 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         TextView tvTitle;
         TextView tvDate;
         TextView tvMessage;
+        View viewUnreadIndicator;
 
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_notification_title);
             tvDate = itemView.findViewById(R.id.tv_notification_date);
             tvMessage = itemView.findViewById(R.id.tv_notification_message);
+            viewUnreadIndicator = itemView.findViewById(R.id.view_unread_indicator);
         }
     }
 }

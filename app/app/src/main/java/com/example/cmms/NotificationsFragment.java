@@ -83,7 +83,7 @@ public class NotificationsFragment extends Fragment {
         adapter = new NotificationsAdapter();
         recyclerView.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider(this).get(NotificationsViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
         viewModel.getNotifications().observe(getViewLifecycleOwner(), notifications -> {
             if(notifications == null || notifications.isEmpty()){
                 recyclerView.setVisibility(View.GONE);
