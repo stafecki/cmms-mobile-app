@@ -1,5 +1,6 @@
 package com.example.cmms;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -73,9 +76,27 @@ public class ProfileFragment extends Fragment {
         TextView tvName = view.findViewById(R.id.tv_name);
         TextView tvEmail = view.findViewById(R.id.tv_email);
         TextView tvRole = view.findViewById(R.id.tv_role);
-        //dokonczyc
-//        viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
-//        viewModel.getUser().observe(getViewLifecycleOwner(), user -> {});
+
+
+        viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        viewModel.getUser().observe(getViewLifecycleOwner(), user -> {
+            tvName.setText(user.getFirstName() + " " + user.getLastName());
+            tvEmail.setText(user.getEmail());
+            tvRole.setText(user.getRole());
+            LinearLayout llCertificates = view.findViewById(R.id.ll_certificates);
+
+            for(User.Certificate certificate : user.getCertificates()) {
+                TextView tvCertificate = new TextView(requireContext());
+                tvCertificate.setText(certificate.name() + " - " + certificate.date());
+                llCertificates.addView(tvCertificate);
+            }
+        });
+
+        Button btnLogout = view.findViewById(R.id.btn_logout);
+        btnLogout.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), LoginActivity.class));
+            requireActivity().finish();
+        });
 
     }
 }
