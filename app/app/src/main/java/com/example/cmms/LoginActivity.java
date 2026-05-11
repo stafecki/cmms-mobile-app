@@ -6,6 +6,8 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.cmms.utils.TokenManager;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
@@ -17,6 +19,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(TokenManager.getToken(this) != null){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         etEmail = findViewById(R.id.et_email);
@@ -27,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleLogin() {
+
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
@@ -52,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (email.equals("admin@cmms.pl") && password.equals("admin123")) {
+            TokenManager.saveToken(this, "example_jwt_token");
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cmms.utils.NetworkUtils;
+import com.example.cmms.utils.TokenManager;
 import com.google.android.material.button.MaterialButton;
 
 public class ProfileFragment extends Fragment {
@@ -135,6 +136,7 @@ public class ProfileFragment extends Fragment {
 
         MaterialButton btnLogout = view.findViewById(R.id.btn_logout);
         btnLogout.setOnClickListener(v -> {
+            TokenManager.clearToken(requireContext());
             startActivity(new Intent(requireContext(), LoginActivity.class));
             requireActivity().finish();
         });
