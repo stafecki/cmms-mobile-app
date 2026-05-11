@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cmms.utils.NetworkUtils;
 import com.google.android.material.chip.Chip;
 
 /**
@@ -79,6 +80,10 @@ public class WorkOrderListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+
+        if(!NetworkUtils.isNetworkAvailable(requireContext())){
+            Toast.makeText(requireContext(), "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
+        }
 
         recyclerView = view.findViewById(R.id.rv_work_orders);
         emptyView = view.findViewById(R.id.tv_empty_view);

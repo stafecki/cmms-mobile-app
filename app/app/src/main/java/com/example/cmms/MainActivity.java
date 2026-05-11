@@ -5,9 +5,11 @@ import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -15,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        observeUnreadBadge(bottomNav);
+
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.machineDetailsFragment || destination.getId() == R.id.workOrderDetailsFragment) {
                 bottomNav.setVisibility(View.GONE);
@@ -60,6 +65,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    private void observeUnreadBadge(BottomNavigationView bottomNav) {
+        NotificationsViewModel vm = new ViewModelProvider(this).get(NotificationsViewModel.class);
+
+        vm.getNotifications().observe(this, notifications ->
+                vm.refreshUnreadNotificationsCount()
+        );
+
+        vm.getUnreadNotificationsCount().observe(this, count -> {
+            BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.notificationsFragment);
+            badge.setBackgroundColor(ContextCompat.getColor(this, R.color.noir));
+            badge.setBadgeTextColor(ContextCompat.getColor(this, R.color.oat));
+            if (count != null && count > 0) {
+                badge.setNumber(count);
+                badge.setVisible(true);
+            } else {
+                badge.setVisible(false);
+            }
+        });
+    }
+
     @Override
     public boolean onSupportNavigateUp(){
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

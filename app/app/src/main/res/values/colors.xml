@@ -21,4 +21,7 @@
     <color name="status_completed_text">#059669</color>
 
     <color name="primary_brand">#060D0C</color>
+
+    <color name="notification_unread_bg">#FFFFFF</color>
+    <color name="notification_read_bg">#E8E3D9</color>
 </resources>
