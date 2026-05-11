@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.cmms.utils.NetworkUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +77,10 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+
+        if(!NetworkUtils.isNetworkAvailable(requireContext())){
+            Toast.makeText(requireContext(), "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
+        }
 
         recyclerView = view.findViewById(R.id.rv_notifications);
         emptyView = view.findViewById(R.id.tv_empty_view);

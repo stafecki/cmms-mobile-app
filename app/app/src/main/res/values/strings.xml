@@ -58,4 +58,6 @@
     <string name="label_priority_prefix">Priorytet: </string>
     <string name="empty_notifications">Brak powiadomień</string>
     <string name="btn_logout">Wyloguj</string>
+    <string name="label_certificates">Certyfikaty</string>
+    <string name="label_no_certificates">Brak certyfikatów</string>
 </resources>
