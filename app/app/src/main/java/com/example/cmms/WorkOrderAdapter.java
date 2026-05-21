@@ -10,62 +10,47 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cmms.data.local.entities.WorkOrderEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.WorkOrderViewHolder> {
 
+    private List<WorkOrderEntity> workOrderList = new ArrayList<>();
 
-    private List<WorkOrder> workOrdersFull;
-    private List<WorkOrder> workOrdersDisplayed;
-
-    public void setWorkOrders(List<WorkOrder> workOrders) {
-        this.workOrdersFull = new ArrayList<>(workOrders);
-        this.workOrdersDisplayed = new ArrayList<>(workOrders);
+    public void setWorkOrders(List<WorkOrderEntity> workOrders) {
+        this.workOrderList = new ArrayList<>(workOrders);
         notifyDataSetChanged();
     }
 
-    public void filterByStatus(String status){
-        workOrdersDisplayed.clear();
-        if (status.isEmpty()) {
-            workOrdersDisplayed.addAll(workOrdersFull);
-        } else {
-            for (WorkOrder workOrder : workOrdersFull) {
-                if (workOrder.getStatus().equals(status)) {
-                    workOrdersDisplayed.add(workOrder);
-                }
-            }
-        }
-        notifyDataSetChanged();
+    public interface onWorkOrderClickListener {
+        void onWorkOrderClick(WorkOrderEntity workOrder);
     }
 
-    public interface onWorkOrderClickListener{
-        void onWorkOrderClick(WorkOrder workOrder);
-    }
+    private final onWorkOrderClickListener listener;
 
-    private onWorkOrderClickListener listener;
-    public WorkOrderAdapter(onWorkOrderClickListener listener){
+    public WorkOrderAdapter(onWorkOrderClickListener listener) {
         this.listener = listener;
     }
-
 
     @NonNull
     @Override
     public WorkOrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_work_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_work_order, parent, false);
         return new WorkOrderViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull WorkOrderViewHolder holder, int position) {
-        WorkOrder workOrder = workOrdersDisplayed.get(position);
+        WorkOrderEntity workOrder = workOrderList.get(position);
         holder.tvTitle.setText(workOrder.getTitle());
         holder.tvPriority.setText(workOrder.getPriority());
         holder.tvStatus.setText(workOrder.getStatus());
 
         int bgColorRes;
         int textColorRes;
-        switch (workOrder.getStatus()) {
+        switch (workOrder.getStatus() != null ? workOrder.getStatus() : "") {
             case "NEW":
                 bgColorRes = R.color.status_new_bg;
                 textColorRes = R.color.status_new_text;
@@ -83,6 +68,7 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
                 textColorRes = R.color.noir;
                 break;
         }
+
         GradientDrawable badge = new GradientDrawable();
         badge.setShape(GradientDrawable.RECTANGLE);
         badge.setCornerRadius(100f);
@@ -90,26 +76,24 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
         holder.tvStatus.setBackground(badge);
         holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), textColorRes));
 
-        holder.itemView.setOnClickListener(view -> {
-            listener.onWorkOrderClick(workOrdersDisplayed.get(position));
-        });
+        holder.itemView.setOnClickListener(v -> listener.onWorkOrderClick(workOrder));
     }
 
     @Override
     public int getItemCount() {
-        return workOrdersDisplayed.size();
+        return workOrderList.size();
     }
+
     static class WorkOrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle;
         TextView tvPriority;
         TextView tvStatus;
 
         public WorkOrderViewHolder(@NonNull View itemView) {
-            super (itemView);
+            super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_work_order_title);
             tvPriority = itemView.findViewById(R.id.tv_work_order_priority);
             tvStatus = itemView.findViewById(R.id.tv_work_order_status);
         }
-
     }
 }

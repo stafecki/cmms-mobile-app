@@ -12,59 +12,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cmms.ui.dashboard.DashboardViewModel;
 import com.example.cmms.utils.NetworkUtils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DashboardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DashboardFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public DashboardFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DashboardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DashboardFragment newInstance(String param1, String param2) {
-        DashboardFragment fragment = new DashboardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 
@@ -72,41 +31,48 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!NetworkUtils.isNetworkAvailable(requireContext())){
+        if (!NetworkUtils.isNetworkAvailable(requireContext())) {
             Toast.makeText(requireContext(), "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
         }
 
         DashboardViewModel viewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
 
-        viewModel.getOpenJobsCount().observe(getViewLifecycleOwner(), count -> {
-            TextView tvCount = view.findViewById(R.id.tvOpenJobsCount);
-            if (tvCount != null) {
-                tvCount.setText(String.valueOf(count));
-            }
-        });
-
-        viewModel.getCriticalJobsCount().observe(getViewLifecycleOwner(), count -> {
-            TextView tvCritical = view.findViewById(R.id.tvCriticalJobsCount);
-            if(tvCritical != null){
-                tvCritical.setText(String.valueOf(count));
-            }
-        });
-
-        viewModel.getUpcomingMaintenanceCount().observe(getViewLifecycleOwner(), count -> {
-            TextView tvUpcoming = view.findViewById(R.id.tvUpcomingMaintenanceCount);
-            if(tvUpcoming != null){
-                tvUpcoming.setText(String.valueOf(count));
-            }
-        });
-
-        viewModel.loadDashboardData();
+        TextView tvOpenJobs = view.findViewById(R.id.tvOpenJobsCount);
+        TextView tvCritical = view.findViewById(R.id.tvCriticalJobsCount);
+        TextView tvUpcoming = view.findViewById(R.id.tvUpcomingMaintenanceCount);
 
         SwipeRefreshLayout swipe = view.findViewById(R.id.main);
-        if(swipe != null) {
-            swipe.setOnRefreshListener(() -> {
-                viewModel.loadDashboardData();
-                swipe.setRefreshing(false);
-            });
+
+        viewModel.getDashboardData().observe(getViewLifecycleOwner(), data -> {
+            if (data != null) {
+                if (tvOpenJobs != null && data.getWorkOrders() != null) {
+                    tvOpenJobs.setText(String.valueOf(data.getWorkOrders().getOpen()));
+                }
+                if (tvCritical != null && data.getWorkOrders() != null) {
+                    tvCritical.setText(String.valueOf(data.getWorkOrders().getCritical()));
+                }
+                if (tvUpcoming != null && data.getPreventive() != null) {
+                    tvUpcoming.setText(String.valueOf(data.getPreventive().getUpcomingIn7Days()));
+                }
+            }
+        });
+
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), loading -> {
+            if (swipe != null) {
+                swipe.setRefreshing(loading != null && loading);
+            }
+        });
+
+        viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
+            if (error != null) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel.loadDashboard("month");
+
+        if (swipe != null) {
+            swipe.setOnRefreshListener(viewModel::refresh);
         }
     }
 }
