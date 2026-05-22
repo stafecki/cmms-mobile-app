@@ -6,8 +6,10 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cmms.utils.TokenManager;
+import com.example.cmms.data.repository.AuthRepository;
+import com.example.cmms.ui.login.LoginViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
@@ -15,12 +17,13 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText etEmail;
     private TextInputEditText etPassword;
     private Button btnLogin;
+    private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(TokenManager.getToken(this) != null){
+        if(new AuthRepository(this).isLoggedIn()){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -34,41 +37,29 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
 
         btnLogin.setOnClickListener(v -> handleLogin());
+
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+        loginViewModel.getErrorMessage().observe(this, errorMessage -> {
+            if(errorMessage != null){
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+        loginViewModel.getLoginSuccess().observe(this, loginResult -> {
+            if(loginResult != null && loginResult){
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            }
+        });
+        loginViewModel.getIsLoading().observe(this, loading -> {
+            btnLogin.setEnabled(!loading);
+        });
     }
 
     private void handleLogin() {
 
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-
-        etEmail.setError(null);
-        etPassword.setError(null);
-
-        if (email.isEmpty()) {
-            etEmail.setError(getString(R.string.error_empty_field));
-            etEmail.requestFocus();
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.setError(getString(R.string.error_invalid_email));
-            etEmail.requestFocus();
-            return;
-        }
-
-        if (password.isEmpty()) {
-            etPassword.setError(getString(R.string.error_empty_field));
-            etPassword.requestFocus();
-            return;
-        }
-
-        if (email.equals("admin@cmms.pl") && password.equals("admin123")) {
-            TokenManager.saveToken(this, "example_jwt_token");
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, getString(R.string.error_wrong_credentials), Toast.LENGTH_SHORT).show();
-        }
+        loginViewModel.login(email, password);
     }
 }

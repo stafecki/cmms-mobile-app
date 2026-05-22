@@ -9,16 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cmms.data.local.entities.NotificationEntity;
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.NotificationViewHolder> {
 
-    private List<Notification> notifications;
+    private List<NotificationEntity> notifications = new ArrayList<>();
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
+    public void setNotifications(List<NotificationEntity> notifications) {
+        this.notifications = new ArrayList<>(notifications);
         notifyDataSetChanged();
     }
 
@@ -31,13 +33,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
-        Notification notification = notifications.get(position);
+        NotificationEntity notification = notifications.get(position);
         holder.tvTitle.setText(notification.getTitle());
-        holder.tvDate.setText(notification.getDate());
+        holder.tvDate.setText(notification.getCreatedAt());
         holder.tvMessage.setText(notification.getMessage());
 
         MaterialCardView card = (MaterialCardView) holder.itemView;
-        if (notification.getIsRead()) {
+        if (notification.isRead()) {
             card.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.notification_read_bg));
             holder.viewUnreadIndicator.setVisibility(View.GONE);
         } else {
@@ -48,7 +50,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     @Override
     public int getItemCount() {
-        return notifications != null ? notifications.size() : 0;
+        return notifications.size();
     }
 
     static class NotificationViewHolder extends RecyclerView.ViewHolder {

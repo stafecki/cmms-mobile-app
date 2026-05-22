@@ -17,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.cmms.ui.notifications.NotificationsViewModel;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -68,11 +69,9 @@ public class MainActivity extends AppCompatActivity {
     private void observeUnreadBadge(BottomNavigationView bottomNav) {
         NotificationsViewModel vm = new ViewModelProvider(this).get(NotificationsViewModel.class);
 
-        vm.getNotifications().observe(this, notifications ->
-                vm.refreshUnreadNotificationsCount()
-        );
+        vm.loadNotifications();
 
-        vm.getUnreadNotificationsCount().observe(this, count -> {
+        vm.getUnreadCount().observe(this, count -> {
             BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.notificationsFragment);
             badge.setBackgroundColor(ContextCompat.getColor(this, R.color.noir));
             badge.setBadgeTextColor(ContextCompat.getColor(this, R.color.oat));

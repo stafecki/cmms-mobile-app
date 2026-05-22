@@ -14,101 +14,65 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cmms.ui.notifications.NotificationsViewModel;
 import com.example.cmms.utils.NetworkUtils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NotificationsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NotificationsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private NotificationsViewModel viewModel;
     private NotificationsAdapter adapter;
     private RecyclerView recyclerView;
     private TextView emptyView;
 
-
     public NotificationsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotificationsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NotificationsFragment newInstance(String param1, String param2) {
-        NotificationsFragment fragment = new NotificationsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_notifications, container, false);
     }
+
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!NetworkUtils.isNetworkAvailable(requireContext())){
+        if (!NetworkUtils.isNetworkAvailable(requireContext())) {
             Toast.makeText(requireContext(), "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
         }
 
         recyclerView = view.findViewById(R.id.rv_notifications);
         emptyView = view.findViewById(R.id.tv_empty_view);
+        SwipeRefreshLayout swipe = view.findViewById(R.id.main);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
         adapter = new NotificationsAdapter();
         recyclerView.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
+
         viewModel.getNotifications().observe(getViewLifecycleOwner(), notifications -> {
-            if(notifications == null || notifications.isEmpty()){
+            if (notifications == null || notifications.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyView.setVisibility(View.GONE);
                 adapter.setNotifications(notifications);
             }
         });
 
-        SwipeRefreshLayout swipe = view.findViewById(R.id.main);
-        if (swipe != null){
-            swipe.setOnRefreshListener(() -> {
-                viewModel.refreshNotifications();
-                swipe.setRefreshing(false);
-            });
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), loading -> {
+            if (swipe != null) {
+                swipe.setRefreshing(loading != null && loading);
+            }
+        });
+
+        viewModel.loadNotifications();
+
+        if (swipe != null) {
+            swipe.setOnRefreshListener(viewModel::loadNotifications);
         }
     }
-
 }
