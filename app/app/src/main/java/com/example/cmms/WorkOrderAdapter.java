@@ -48,6 +48,20 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
         holder.tvPriority.setText(workOrder.getPriority());
         holder.tvStatus.setText(workOrder.getStatus());
 
+        if (workOrder.getMachineName() != null && !workOrder.getMachineName().isEmpty()) {
+            holder.tvMachine.setText("Maszyna: " + workOrder.getMachineName());
+            holder.tvMachine.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvMachine.setVisibility(View.GONE);
+        }
+
+        if (workOrder.getAssignedToName() != null && !workOrder.getAssignedToName().isEmpty()) {
+            holder.tvAssignee.setText("Technik: " + workOrder.getAssignedToName());
+            holder.tvAssignee.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvAssignee.setVisibility(View.GONE);
+        }
+
         int bgColorRes;
         int textColorRes;
         switch (workOrder.getStatus() != null ? workOrder.getStatus() : "") {
@@ -88,12 +102,16 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.Work
         TextView tvTitle;
         TextView tvPriority;
         TextView tvStatus;
+        TextView tvMachine;
+        TextView tvAssignee;
 
         public WorkOrderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_work_order_title);
             tvPriority = itemView.findViewById(R.id.tv_work_order_priority);
             tvStatus = itemView.findViewById(R.id.tv_work_order_status);
+            tvMachine = itemView.findViewById(R.id.tv_work_order_machine);
+            tvAssignee = itemView.findViewById(R.id.tv_work_order_assignee);
         }
     }
 }

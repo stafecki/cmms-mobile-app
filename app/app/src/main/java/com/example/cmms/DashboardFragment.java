@@ -51,8 +51,12 @@ public class DashboardFragment extends Fragment {
                 if (tvCritical != null && data.getWorkOrders() != null) {
                     tvCritical.setText(String.valueOf(data.getWorkOrders().getCritical()));
                 }
-                if (tvUpcoming != null && data.getPreventive() != null) {
-                    tvUpcoming.setText(String.valueOf(data.getPreventive().getUpcomingIn7Days()));
+                if (tvUpcoming != null) {
+                    if (data.getPreventive() != null) {
+                        tvUpcoming.setText(String.valueOf(data.getPreventive().getUpcomingIn7Days()));
+                    } else {
+                        tvUpcoming.setText("—");
+                    }
                 }
             }
         });

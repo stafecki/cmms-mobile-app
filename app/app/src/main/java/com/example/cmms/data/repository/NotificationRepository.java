@@ -26,17 +26,19 @@ public class NotificationRepository {
 
     private static final String TAG = "NotificationRepository";
 
+    private final Context context;
     private final AppDatabase database;
     private final NotificationDao notificationDao;
     private final Executor executor = Executors.newSingleThreadExecutor();
 
     public NotificationRepository(@NonNull Context context) {
+        this.context = context.getApplicationContext();
         this.database = AppDatabase.getInstance(context);
         this.notificationDao = database.notificationDao();
     }
 
     public LiveData<List<NotificationEntity>> getNotifications(@NonNull String token) {
-        ApiService api = ApiClient.getApiService(token);
+        ApiService api = ApiClient.getApiService(context);
         api.getNotifications().enqueue(new Callback<List<NotificationResponse>>() {
             @Override
             public void onResponse(@NonNull Call<List<NotificationResponse>> call, @NonNull Response<List<NotificationResponse>> response) {
@@ -62,6 +64,21 @@ public class NotificationRepository {
 
     public LiveData<Integer> getUnreadCount() {
         return notificationDao.getUnreadCount();
+    }
+
+    public void markAsRead(@NonNull String token, @NonNull String id) {
+        ApiService api = ApiClient.getApiService(context);
+        api.markNotificationRead(id).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                executor.execute(() -> notificationDao.markAsRead(id));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                executor.execute(() -> notificationDao.markAsRead(id));
+            }
+        });
     }
 
     private List<NotificationEntity> mapNotifications(List<NotificationResponse> responses) {

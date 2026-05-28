@@ -18,6 +18,10 @@
             android:id="@+id/action_machineListFragment_to_machineDetailsFragment"
             app:destination="@id/machineDetailsFragment" />
 
+        <action
+            android:id="@+id/action_machineListFragment_to_addMachineFragment"
+            app:destination="@id/addMachineFragment" />
+
     </fragment>
 
     <fragment
@@ -28,6 +32,10 @@
         <action
             android:id="@+id/action_workOrderListFragment_to_workOrderDetailsFragment"
             app:destination="@id/workOrderDetailsFragment" />
+
+        <action
+            android:id="@+id/action_workOrderListFragment_to_addWorkOrderFragment"
+            app:destination="@id/addWorkOrderFragment" />
 
     </fragment>
 
@@ -45,13 +53,32 @@
         android:id="@+id/machineDetailsFragment"
         android:name="com.example.cmms.MachineDetailsFragment"
         android:label="@string/nav_label_machine_details">
+
+        <action
+            android:id="@+id/action_machineDetailsFragment_to_addMachineFragment"
+            app:destination="@id/addMachineFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/workOrderDetailsFragment"
         android:name="com.example.cmms.WorkOrderDetailsFragment"
-        android:label="@string/nav_label_work_order_details"/>
+        android:label="@string/nav_label_work_order_details">
 
+        <action
+            android:id="@+id/action_workOrderDetailsFragment_to_addWorkOrderFragment"
+            app:destination="@id/addWorkOrderFragment" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/addMachineFragment"
+        android:name="com.example.cmms.AddMachineFragment"
+        android:label="@string/title_add_machine" />
+
+    <fragment
+        android:id="@+id/addWorkOrderFragment"
+        android:name="com.example.cmms.AddWorkOrderFragment"
+        android:label="@string/title_add_work_order" />
 
 </navigation>

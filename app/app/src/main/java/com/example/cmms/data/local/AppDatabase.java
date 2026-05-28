@@ -16,7 +16,7 @@ import com.example.cmms.utils.Constants;
 
 @Database(
         entities = {MachineEntity.class, WorkOrderEntity.class, NotificationEntity.class},
-        version = 1,
+        version = 2,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -35,7 +35,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             context.getApplicationContext(),
                             AppDatabase.class,
                             Constants.DB_NAME
-                    ).build();
+                    ).fallbackToDestructiveMigration().build();
                 }
             }
         }

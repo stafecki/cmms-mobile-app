@@ -35,12 +35,16 @@ public class WorkOrdersViewModel extends AndroidViewModel {
         isLoading.setValue(true);
         errorMessage.setValue(null);
         String token = authRepository.getToken();
-        setWorkOrdersSource(workOrderRepository.getWorkOrders(token));
+        String role = authRepository.getSavedUserRole();
+        String userId = authRepository.getSavedUserId();
+        setWorkOrdersSource(workOrderRepository.getWorkOrdersForRole(token, role, userId));
     }
 
     public void filterByStatus(@NonNull String status) {
         selectedStatus.setValue(status);
-        setWorkOrdersSource(workOrderRepository.getWorkOrdersByStatus(status));
+        String role = authRepository.getSavedUserRole();
+        String userId = authRepository.getSavedUserId();
+        setWorkOrdersSource(workOrderRepository.getWorkOrdersForRoleAndStatus(role, userId, status));
     }
 
     private void setWorkOrdersSource(@NonNull LiveData<List<WorkOrderEntity>> newSource) {

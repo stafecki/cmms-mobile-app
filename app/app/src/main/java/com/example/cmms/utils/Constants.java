@@ -7,8 +7,10 @@ public class Constants {
 
     public static final String PREFS_NAME = "cmms_prefs";
     public static final String KEY_TOKEN = "access_token";
+    public static final String KEY_REFRESH_TOKEN = "refresh_token";
     public static final String KEY_USER_ID = "user_id";
     public static final String KEY_USER_ROLE = "user_role";
+
 
     private Constants() {}
 }
