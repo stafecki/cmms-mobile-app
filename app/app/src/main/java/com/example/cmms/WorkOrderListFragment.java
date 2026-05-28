@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import com.example.cmms.data.repository.AuthRepository;
 import com.example.cmms.ui.workorders.WorkOrdersViewModel;
 import com.example.cmms.utils.NetworkUtils;
 import com.google.android.material.chip.Chip;
@@ -27,9 +30,7 @@ public class WorkOrderListFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView emptyView;
 
-    public WorkOrderListFragment() {
-        // Required empty public constructor
-    }
+    public WorkOrderListFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,6 +100,23 @@ public class WorkOrderListFragment extends Fragment {
 
         if (swipe != null) {
             swipe.setOnRefreshListener(viewModel::loadWorkOrders);
+        }
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_add_work_order);
+        if (fab != null) {
+            AuthRepository authRepository = new AuthRepository(requireContext());
+            String role = authRepository.getSavedUserRole();
+            boolean canAdd = "ADMIN".equals(role) || "MANAGER".equals(role) || "OPERATOR".equals(role);
+
+            if (canAdd) {
+                fab.setVisibility(View.VISIBLE);
+                fab.setOnClickListener(v -> {
+                    NavController navController = Navigation.findNavController(view);
+                    navController.navigate(R.id.action_workOrderListFragment_to_addWorkOrderFragment);
+                });
+            } else {
+                fab.setVisibility(View.GONE);
+            }
         }
     }
 }

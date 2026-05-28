@@ -16,6 +16,9 @@ public interface MachineDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<MachineEntity> machines);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(MachineEntity machine);
+
     @Query("SELECT * FROM machines WHERE isActive = 1 ORDER BY name ASC")
     LiveData<List<MachineEntity>> getAll();
 
@@ -24,6 +27,9 @@ public interface MachineDao {
 
     @Query("SELECT * FROM machines WHERE name LIKE '%' || :query || '%'")
     LiveData<List<MachineEntity>> search(String query);
+
+    @Query("DELETE FROM machines WHERE id = :id")
+    void deleteById(String id);
 
     @Query("DELETE FROM machines")
     void deleteAll();

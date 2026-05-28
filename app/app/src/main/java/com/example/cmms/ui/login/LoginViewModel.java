@@ -27,15 +27,15 @@ public class LoginViewModel extends AndroidViewModel {
 
     public void login(@NonNull String email, @NonNull String password) {
         if (email.trim().isEmpty()) {
-            errorMessage.setValue("Email is required");
+            errorMessage.setValue("Podaj adres email");
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) {
-            errorMessage.setValue("Invalid email format");
+            errorMessage.setValue("Błędny format email");
             return;
         }
         if (password.trim().isEmpty()) {
-            errorMessage.setValue("Password is required");
+            errorMessage.setValue("Podaj hasło");
             return;
         }
 

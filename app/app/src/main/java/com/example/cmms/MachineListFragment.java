@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import com.example.cmms.data.repository.AuthRepository;
 import com.example.cmms.ui.machines.MachinesViewModel;
 import com.example.cmms.utils.NetworkUtils;
 
@@ -27,9 +30,7 @@ public class MachineListFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView emptyView;
 
-    public MachineListFragment() {
-        // Required empty public constructor
-    }
+    public MachineListFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,6 +109,23 @@ public class MachineListFragment extends Fragment {
 
         if (swipe != null) {
             swipe.setOnRefreshListener(viewModel::loadMachines);
+        }
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_add_machine);
+        if (fab != null) {
+            AuthRepository authRepository = new AuthRepository(requireContext());
+            String role = authRepository.getSavedUserRole();
+            boolean canAdd = "ADMIN".equals(role) || "MANAGER".equals(role);
+
+            if (canAdd) {
+                fab.setVisibility(View.VISIBLE);
+                fab.setOnClickListener(v -> {
+                    NavController navController = Navigation.findNavController(view);
+                    navController.navigate(R.id.action_machineListFragment_to_addMachineFragment);
+                });
+            } else {
+                fab.setVisibility(View.GONE);
+            }
         }
     }
 }

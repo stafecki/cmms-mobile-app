@@ -32,7 +32,7 @@ public class AuthRepository {
     }
 
     public void login(@NonNull String email, @NonNull String password, @NonNull AuthCallback callback) {
-        ApiService api = ApiClient.getApiService(null);
+        ApiService api = ApiClient.getApiService((String) null);
         api.login(new LoginRequest(email, password)).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
@@ -40,11 +40,12 @@ public class AuthRepository {
                     LoginResponse body = response.body();
                     if (body.getTokens() == null || body.getUser() == null) {
                         Log.e(TAG, "Login response missing tokens or user data");
-                        callback.onError("Invalid server response");
+                        callback.onError("Nieprawidłowa odpowiedź serwera");
                         return;
                     }
                     prefs.edit()
                             .putString(Constants.KEY_TOKEN, body.getTokens().getAccessToken())
+                            .putString(Constants.KEY_REFRESH_TOKEN, body.getTokens().getRefreshToken())
                             .putString(Constants.KEY_USER_ID, body.getUser().getId())
                             .putString(Constants.KEY_USER_ROLE, body.getUser().getRole())
                             .apply();
@@ -52,14 +53,14 @@ public class AuthRepository {
                     callback.onSuccess();
                 } else {
                     Log.e(TAG, "Login failed with code: " + response.code());
-                    callback.onError("Login failed: " + response.code());
+                    callback.onError(response.code() == 401 ? "Błędny email lub hasło" : "Błąd logowania. Spróbuj ponownie.");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "Login network error", t);
-                callback.onError(t.getMessage());
+                callback.onError("Błąd połączenia z serwerem");
             }
         });
     }
@@ -94,5 +95,16 @@ public class AuthRepository {
 
     public String getSavedUserRole() {
         return prefs.getString(Constants.KEY_USER_ROLE, null);
+    }
+
+    public String getRefreshToken() {
+        return prefs.getString(Constants.KEY_REFRESH_TOKEN, null);
+    }
+
+    public void saveTokens(String accessToken, String refreshToken) {
+        prefs.edit()
+                .putString(Constants.KEY_TOKEN, accessToken)
+                .putString(Constants.KEY_REFRESH_TOKEN, refreshToken)
+                .apply();
     }
 }

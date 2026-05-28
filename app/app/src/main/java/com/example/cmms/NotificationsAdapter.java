@@ -17,11 +17,20 @@ import java.util.List;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.NotificationViewHolder> {
 
+    public interface OnNotificationClickListener {
+        void onNotificationClick(NotificationEntity notification);
+    }
+
     private List<NotificationEntity> notifications = new ArrayList<>();
+    private OnNotificationClickListener listener;
 
     public void setNotifications(List<NotificationEntity> notifications) {
         this.notifications = new ArrayList<>(notifications);
         notifyDataSetChanged();
+    }
+
+    public void setOnNotificationClickListener(OnNotificationClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -46,6 +55,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             card.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.notification_unread_bg));
             holder.viewUnreadIndicator.setVisibility(View.VISIBLE);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null && !notification.isRead()) {
+                listener.onNotificationClick(notification);
+            }
+        });
     }
 
     @Override

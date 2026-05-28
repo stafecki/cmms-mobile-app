@@ -25,11 +25,6 @@
             android:layout_marginBottom="14dp">
 
             <View
-                android:layout_width="28dp"
-                android:layout_height="3dp"
-                android:background="@color/noir"/>
-
-            <Space
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"/>
@@ -63,7 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,6 +85,23 @@
                 android:contentDescription="@null"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_work_order_machine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/grey_text"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_work_order_assignee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/grey_text"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

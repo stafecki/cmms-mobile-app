@@ -55,6 +55,11 @@ public class NotificationsViewModel extends AndroidViewModel {
         return unreadCount;
     }
 
+    public void markAsRead(@NonNull String id) {
+        String token = authRepository.getToken();
+        notificationRepository.markAsRead(token, id);
+    }
+
     @NonNull
     public MutableLiveData<Boolean> getIsLoading() {
         return isLoading;

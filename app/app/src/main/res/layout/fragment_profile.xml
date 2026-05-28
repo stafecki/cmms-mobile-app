@@ -131,12 +131,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <View
-                        android:layout_width="28dp"
-                        android:layout_height="3dp"
-                        android:background="@color/noir"
-                        android:layout_marginBottom="16dp"/>
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

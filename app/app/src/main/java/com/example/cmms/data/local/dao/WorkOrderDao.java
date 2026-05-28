@@ -16,6 +16,12 @@ public interface WorkOrderDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<WorkOrderEntity> workOrders);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(WorkOrderEntity workOrder);
+
+    @Query("UPDATE work_orders SET status = :status WHERE id = :id")
+    void updateStatus(String id, String status);
+
     @Query("SELECT * FROM work_orders ORDER BY createdAt DESC")
     LiveData<List<WorkOrderEntity>> getAll();
 
@@ -24,6 +30,18 @@ public interface WorkOrderDao {
 
     @Query("SELECT * FROM work_orders WHERE status = :status ORDER BY createdAt DESC")
     LiveData<List<WorkOrderEntity>> getByStatus(String status);
+
+    @Query("SELECT * FROM work_orders WHERE assignedToId = :userId ORDER BY createdAt DESC")
+    LiveData<List<WorkOrderEntity>> getByAssignedTo(String userId);
+
+    @Query("SELECT * FROM work_orders WHERE assignedToId = :userId AND status = :status ORDER BY createdAt DESC")
+    LiveData<List<WorkOrderEntity>> getByAssignedToAndStatus(String userId, String status);
+
+    @Query("SELECT * FROM work_orders WHERE reportedById = :userId ORDER BY createdAt DESC")
+    LiveData<List<WorkOrderEntity>> getByReportedBy(String userId);
+
+    @Query("SELECT * FROM work_orders WHERE reportedById = :userId AND status = :status ORDER BY createdAt DESC")
+    LiveData<List<WorkOrderEntity>> getByReportedByAndStatus(String userId, String status);
 
     @Query("DELETE FROM work_orders")
     void deleteAll();

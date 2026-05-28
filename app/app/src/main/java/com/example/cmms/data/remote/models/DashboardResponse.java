@@ -27,6 +27,15 @@ public class DashboardResponse {
     public InventoryStats getInventory() { return inventory; }
     public PreventiveStats getPreventive() { return preventive; }
 
+    public static DashboardResponse fromBasicStats(int openCount, int criticalCount) {
+        DashboardResponse response = new DashboardResponse();
+        WorkOrderStats stats = new WorkOrderStats();
+        stats.open = openCount;
+        stats.critical = criticalCount;
+        response.workOrders = stats;
+        return response;
+    }
+
     public static class WorkOrderStats {
         private int total;
         private Map<String, Integer> byStatus;

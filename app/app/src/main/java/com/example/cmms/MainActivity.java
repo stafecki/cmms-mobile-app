@@ -1,7 +1,9 @@
 package com.example.cmms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.cmms.ui.notifications.NotificationsViewModel;
+import com.example.cmms.utils.SessionManager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -34,6 +37,17 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        SessionManager.reset();
+        SessionManager.getSessionExpired().observe(this, expired -> {
+            if (expired != null && expired) {
+                Toast.makeText(this, "Sesja wygasła. Zaloguj się ponownie.", Toast.LENGTH_LONG).show();
+                Intent loginIntent = new Intent(this, LoginActivity.class);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(loginIntent);
+                finish();
+            }
         });
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
@@ -56,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
         observeUnreadBadge(bottomNav);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.machineDetailsFragment || destination.getId() == R.id.workOrderDetailsFragment) {
+            int id = destination.getId();
+            if (id == R.id.machineDetailsFragment || id == R.id.workOrderDetailsFragment
+                    || id == R.id.addMachineFragment || id == R.id.addWorkOrderFragment) {
                 bottomNav.setVisibility(View.GONE);
                 getSupportActionBar().show();
             } else {

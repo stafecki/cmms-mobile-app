@@ -34,8 +34,7 @@ public class ProfileViewModel extends AndroidViewModel {
     public void loadProfile() {
         isLoading.setValue(true);
 
-        String token = authRepository.getToken();
-        ApiService api = ApiClient.getApiService(token);
+        ApiService api = ApiClient.getApiService(getApplication());
 
         api.getMe().enqueue(new Callback<UserResponse>() {
             @Override

@@ -16,8 +16,20 @@ public class WorkOrderEntity {
     private String description;
     private boolean bhpConfirmed;
     private String createdAt;
+    private String machineId;
+    private String machineName;
+    private String assignedToId;
+    private String assignedToName;
+    private String reportedById;
+    private String reportedByName;
+    private String partsText;
 
-    public WorkOrderEntity(@NonNull String id, String title, String status, String priority, String description, boolean bhpConfirmed, String createdAt) {
+    public WorkOrderEntity(@NonNull String id, String title, String status, String priority,
+                           String description, boolean bhpConfirmed, String createdAt,
+                           String machineId, String machineName,
+                           String assignedToId, String assignedToName,
+                           String reportedById, String reportedByName,
+                           String partsText) {
         this.id = id;
         this.title = title;
         this.status = status;
@@ -25,6 +37,13 @@ public class WorkOrderEntity {
         this.description = description;
         this.bhpConfirmed = bhpConfirmed;
         this.createdAt = createdAt;
+        this.machineId = machineId;
+        this.machineName = machineName;
+        this.assignedToId = assignedToId;
+        this.assignedToName = assignedToName;
+        this.reportedById = reportedById;
+        this.reportedByName = reportedByName;
+        this.partsText = partsText;
     }
 
     @NonNull
@@ -35,4 +54,11 @@ public class WorkOrderEntity {
     public String getDescription() { return description; }
     public boolean isBhpConfirmed() { return bhpConfirmed; }
     public String getCreatedAt() { return createdAt; }
+    public String getMachineId() { return machineId; }
+    public String getMachineName() { return machineName; }
+    public String getAssignedToId() { return assignedToId; }
+    public String getAssignedToName() { return assignedToName; }
+    public String getReportedById() { return reportedById; }
+    public String getReportedByName() { return reportedByName; }
+    public String getPartsText() { return partsText; }
 }

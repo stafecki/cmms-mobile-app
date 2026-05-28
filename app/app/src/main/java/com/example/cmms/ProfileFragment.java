@@ -9,12 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cmms.data.remote.models.UserResponse;
 import com.example.cmms.ui.profile.ProfileViewModel;
 import com.example.cmms.utils.NetworkUtils;
 import com.google.android.material.button.MaterialButton;
+
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
@@ -49,7 +53,7 @@ public class ProfileFragment extends Fragment {
             String fullName = user.getName() != null ? user.getName() : "";
             tvName.setText(fullName);
             tvEmail.setText(user.getEmail());
-            tvRole.setText(user.getRole());
+            tvRole.setText(translateRole(user.getRole()));
 
             String initials = "";
             String[] parts = fullName.trim().split("\\s+");
@@ -61,11 +65,19 @@ public class ProfileFragment extends Fragment {
 
             if (llCertificates != null) {
                 llCertificates.removeAllViews();
-                TextView tvEmpty = new TextView(requireContext());
-                tvEmpty.setText(R.string.label_no_certificates);
-                tvEmpty.setTextSize(14f);
-                tvEmpty.setTextColor(getResources().getColor(R.color.grey_text, null));
-                llCertificates.addView(tvEmpty);
+                List<UserResponse.Certification> certs = user.getCertifications();
+                if (certs == null || certs.isEmpty()) {
+                    TextView tvEmpty = new TextView(requireContext());
+                    tvEmpty.setText(R.string.label_no_certificates);
+                    tvEmpty.setTextSize(14f);
+                    tvEmpty.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey_text));
+                    llCertificates.addView(tvEmpty);
+                } else {
+                    for (UserResponse.Certification cert : certs) {
+                        View certView = buildCertificateView(cert);
+                        llCertificates.addView(certView);
+                    }
+                }
             }
         });
 
@@ -80,5 +92,56 @@ public class ProfileFragment extends Fragment {
 
         MaterialButton btnLogout = view.findViewById(R.id.btn_logout);
         btnLogout.setOnClickListener(v -> viewModel.logout());
+    }
+
+    private View buildCertificateView(UserResponse.Certification cert) {
+        LinearLayout row = new LinearLayout(requireContext());
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setPadding(0, 8, 0, 8);
+
+        TextView tvType = new TextView(requireContext());
+        tvType.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        tvType.setText(translateCertType(cert.getType()));
+        tvType.setTextSize(14f);
+        tvType.setTextColor(ContextCompat.getColor(requireContext(), R.color.noir));
+
+        TextView tvStatus = new TextView(requireContext());
+        tvStatus.setTextSize(12f);
+        if (cert.isValid()) {
+            tvStatus.setText(R.string.cert_valid);
+            tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.status_completed_text));
+        } else {
+            tvStatus.setText(R.string.cert_expired);
+            tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.critical_text));
+        }
+
+        row.addView(tvType);
+        row.addView(tvStatus);
+        return row;
+    }
+
+    private String translateRole(String role) {
+        if (role == null) return "";
+        switch (role) {
+            case "ADMIN": return "Administrator";
+            case "MANAGER": return "Kierownik";
+            case "TECHNICIAN": return "Technik";
+            case "WAREHOUSE": return "Magazynier";
+            case "OPERATOR": return "Operator";
+            default: return role;
+        }
+    }
+
+    private String translateCertType(String type) {
+        if (type == null) return "";
+        switch (type) {
+            case "SEP": return "Uprawnienia SEP";
+            case "FORKLIFT": return "Wózek widłowy";
+            case "GAS": return "Uprawnienia gazowe";
+            case "HEIGHT_WORK": return "Praca na wysokości";
+            case "WELDING": return "Uprawnienia spawalnicze";
+            case "OTHER": return "Inne";
+            default: return type;
+        }
     }
 }
