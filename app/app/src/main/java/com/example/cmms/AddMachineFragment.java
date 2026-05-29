@@ -131,7 +131,7 @@ public class AddMachineFragment extends Fragment {
 
             if (isEditMode) {
                 String purchaseDate = dateStr.isEmpty() ? null : dateStr;
-                Double purchasePrice = priceStr.isEmpty() ? null : Double.parseDouble(priceStr);
+                double purchasePrice = priceStr.isEmpty() ? 0 : Double.parseDouble(priceStr);
                 viewModel.updateMachine(editMachineId, name, serial, locationId, hours, purchaseDate, purchasePrice);
             } else {
                 if (dateStr.isEmpty()) {
