@@ -42,10 +42,6 @@ public class WorkOrderListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (!NetworkUtils.isNetworkAvailable(requireContext())) {
-            Toast.makeText(requireContext(), "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
-        }
-
         recyclerView = view.findViewById(R.id.rv_work_orders);
         emptyView = view.findViewById(R.id.tv_empty_view);
         SwipeRefreshLayout swipe = view.findViewById(R.id.main);
@@ -104,9 +100,10 @@ public class WorkOrderListFragment extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.fab_add_work_order);
         if (fab != null) {
+            boolean isOnline = NetworkUtils.isNetworkAvailable(requireContext());
             AuthRepository authRepository = new AuthRepository(requireContext());
             String role = authRepository.getSavedUserRole();
-            boolean canAdd = "ADMIN".equals(role) || "MANAGER".equals(role) || "OPERATOR".equals(role);
+            boolean canAdd = isOnline && ("ADMIN".equals(role) || "MANAGER".equals(role) || "OPERATOR".equals(role));
 
             if (canAdd) {
                 fab.setVisibility(View.VISIBLE);

@@ -48,6 +48,8 @@ public class AuthRepository {
                             .putString(Constants.KEY_REFRESH_TOKEN, body.getTokens().getRefreshToken())
                             .putString(Constants.KEY_USER_ID, body.getUser().getId())
                             .putString(Constants.KEY_USER_ROLE, body.getUser().getRole())
+                            .putString(Constants.KEY_USER_NAME, body.getUser().getName())
+                            .putString(Constants.KEY_USER_EMAIL, body.getUser().getEmail())
                             .apply();
                     Log.d(TAG, "Login successful for user: " + body.getUser().getId());
                     callback.onSuccess();
@@ -95,6 +97,14 @@ public class AuthRepository {
 
     public String getSavedUserRole() {
         return prefs.getString(Constants.KEY_USER_ROLE, null);
+    }
+
+    public String getSavedUserName() {
+        return prefs.getString(Constants.KEY_USER_NAME, null);
+    }
+
+    public String getSavedUserEmail() {
+        return prefs.getString(Constants.KEY_USER_EMAIL, null);
     }
 
     public String getRefreshToken() {

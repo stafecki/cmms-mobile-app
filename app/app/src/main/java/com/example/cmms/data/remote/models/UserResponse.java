@@ -19,6 +19,14 @@ public class UserResponse {
     public String getCreatedAt() { return createdAt; }
     public List<Certification> getCertifications() { return certifications; }
 
+    public static UserResponse fromLocal(String name, String email, String role) {
+        UserResponse u = new UserResponse();
+        u.name = name;
+        u.email = email;
+        u.role = role;
+        return u;
+    }
+
     public static class Certification {
         private String id;
         private String type;

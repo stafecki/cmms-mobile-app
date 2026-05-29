@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cmms.data.remote.models.UserResponse;
 import com.example.cmms.ui.profile.ProfileViewModel;
-import com.example.cmms.utils.NetworkUtils;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
@@ -34,10 +33,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (!NetworkUtils.isNetworkAvailable(requireContext())) {
-            Toast.makeText(requireContext(), "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
-        }
 
         TextView tvAvatar = view.findViewById(R.id.tv_avatar);
         TextView tvName = view.findViewById(R.id.tv_name);

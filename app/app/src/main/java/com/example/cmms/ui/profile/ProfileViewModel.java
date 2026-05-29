@@ -11,6 +11,7 @@ import com.example.cmms.data.remote.ApiClient;
 import com.example.cmms.data.remote.ApiService;
 import com.example.cmms.data.remote.models.UserResponse;
 import com.example.cmms.data.repository.AuthRepository;
+import com.example.cmms.utils.NetworkUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +33,11 @@ public class ProfileViewModel extends AndroidViewModel {
     }
 
     public void loadProfile() {
+        if (!NetworkUtils.isNetworkAvailable(getApplication())) {
+            loadFromLocal();
+            return;
+        }
+
         isLoading.setValue(true);
 
         ApiService api = ApiClient.getApiService(getApplication());
@@ -44,6 +50,7 @@ public class ProfileViewModel extends AndroidViewModel {
                     user.postValue(response.body());
                 } else {
                     Log.e(TAG, "loadProfile failed with code: " + response.code());
+                    loadFromLocal();
                 }
             }
 
@@ -51,8 +58,19 @@ public class ProfileViewModel extends AndroidViewModel {
             public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "loadProfile network error", t);
                 isLoading.postValue(false);
+                loadFromLocal();
             }
         });
+    }
+
+    private void loadFromLocal() {
+        isLoading.setValue(false);
+        UserResponse localUser = UserResponse.fromLocal(
+                authRepository.getSavedUserName(),
+                authRepository.getSavedUserEmail(),
+                authRepository.getSavedUserRole()
+        );
+        user.setValue(localUser);
     }
 
     public void logout() {

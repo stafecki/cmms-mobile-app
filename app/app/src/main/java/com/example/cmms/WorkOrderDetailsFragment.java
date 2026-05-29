@@ -19,6 +19,7 @@ import com.example.cmms.data.remote.models.PartResponse;
 import com.example.cmms.data.remote.models.UserResponse;
 import com.example.cmms.data.repository.AuthRepository;
 import com.example.cmms.ui.workorders.WorkOrderDetailViewModel;
+import com.example.cmms.utils.NetworkUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -75,18 +76,19 @@ public class WorkOrderDetailsFragment extends Fragment {
         AuthRepository authRepository = new AuthRepository(requireContext());
         String role = authRepository.getSavedUserRole();
         String currentUserId = authRepository.getSavedUserId();
+        boolean isOnline = NetworkUtils.isNetworkAvailable(requireContext());
 
         boolean isAdmin = "ADMIN".equals(role);
         boolean isManager = "MANAGER".equals(role);
         boolean isManagerOrAdmin = isAdmin || isManager;
         boolean isTechnician = "TECHNICIAN".equals(role);
-        boolean canEdit = isManagerOrAdmin;
+        boolean canEdit = isOnline && isManagerOrAdmin;
 
         if (canEdit) {
             cardEditActions.setVisibility(View.VISIBLE);
         }
 
-        if (isManagerOrAdmin) {
+        if (isOnline && isManagerOrAdmin) {
             cardAssign.setVisibility(View.VISIBLE);
             viewModel.loadTechnicians();
         }
@@ -103,8 +105,8 @@ public class WorkOrderDetailsFragment extends Fragment {
             tvParts.setText(wo.getPartsText() != null ? wo.getPartsText() : "-");
 
             boolean isAssigned = currentUserId != null && currentUserId.equals(wo.getAssignedToId());
-            boolean canChangeStatus = isManagerOrAdmin || (isTechnician && isAssigned);
-            boolean canAddParts = isManagerOrAdmin || (isTechnician && isAssigned);
+            boolean canChangeStatus = isOnline && (isManagerOrAdmin || (isTechnician && isAssigned));
+            boolean canAddParts = isOnline && (isManagerOrAdmin || (isTechnician && isAssigned));
 
             if (canAddParts) {
                 cardAddParts.setVisibility(View.VISIBLE);

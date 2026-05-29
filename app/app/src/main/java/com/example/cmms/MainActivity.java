@@ -1,11 +1,17 @@
 package com.example.cmms;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -20,6 +26,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.cmms.ui.notifications.NotificationsViewModel;
+import com.example.cmms.utils.NetworkUtils;
 import com.example.cmms.utils.SessionManager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,6 +34,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
+    private TextView tvOfflineBanner;
+    private ConnectivityManager connectivityManager;
+    private ConnectivityManager.NetworkCallback networkCallback;
+    private boolean wasOffline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
         observeUnreadBadge(bottomNav);
 
+        tvOfflineBanner = findViewById(R.id.tv_offline_banner);
+        setupNetworkMonitor();
+
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             int id = destination.getId();
             if (id == R.id.machineDetailsFragment || id == R.id.workOrderDetailsFragment
@@ -98,6 +112,51 @@ public class MainActivity extends AppCompatActivity {
                 badge.setVisible(false);
             }
         });
+    }
+
+    private void setupNetworkMonitor() {
+        connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+
+        if (!NetworkUtils.isNetworkAvailable(this)) {
+            tvOfflineBanner.setVisibility(View.VISIBLE);
+            wasOffline = true;
+        }
+
+        networkCallback = new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(@NonNull Network network) {
+                runOnUiThread(() -> {
+                    tvOfflineBanner.setVisibility(View.GONE);
+                    if (wasOffline) {
+                        Toast.makeText(MainActivity.this, R.string.connection_restored, Toast.LENGTH_SHORT).show();
+                        wasOffline = false;
+                    }
+                });
+            }
+
+            @Override
+            public void onLost(@NonNull Network network) {
+                runOnUiThread(() -> {
+                    if (!NetworkUtils.isNetworkAvailable(MainActivity.this)) {
+                        tvOfflineBanner.setVisibility(View.VISIBLE);
+                        wasOffline = true;
+                    }
+                });
+            }
+        };
+
+        NetworkRequest request = new NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build();
+        connectivityManager.registerNetworkCallback(request, networkCallback);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (connectivityManager != null && networkCallback != null) {
+            connectivityManager.unregisterNetworkCallback(networkCallback);
+        }
     }
 
     @Override

@@ -9,6 +9,8 @@
     <string name="status_completed">GOTOWE</string>
 
     <string name="dashboard_title">Dashboard Statystyki</string>
+    <string name="offline_mode">Tryb offline</string>
+    <string name="connection_restored">Połączenie przywrócone</string>
     <string name="label_open_jobs">Otwarte zlecenia</string>
     <string name="label_critical_jobs">Krytyczne awarie</string>
     <string name="label_upcoming_maintenance">Nadchodzące przeglądy</string>

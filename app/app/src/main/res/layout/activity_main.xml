@@ -20,6 +20,19 @@
         app:subtitleTextColor="@color/grey_text"
         app:navigationIcon="@drawable/ic_arrow_back_24"/>
 
+    <TextView
+        android:id="@+id/tv_offline_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/offline_mode"
+        android:background="#E65100"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textAlignment="center"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:visibility="gone"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="0dp"

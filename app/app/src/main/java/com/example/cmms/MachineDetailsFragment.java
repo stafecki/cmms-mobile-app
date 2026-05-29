@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.cmms.data.repository.AuthRepository;
 import com.example.cmms.ui.machines.MachineDetailViewModel;
+import com.example.cmms.utils.NetworkUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -63,17 +64,18 @@ public class MachineDetailsFragment extends Fragment {
 
         AuthRepository authRepository = new AuthRepository(requireContext());
         String role = authRepository.getSavedUserRole();
+        boolean isOnline = NetworkUtils.isNetworkAvailable(requireContext());
 
         boolean isAdmin = "ADMIN".equals(role);
         boolean isManager = "MANAGER".equals(role);
         boolean isTechnician = "TECHNICIAN".equals(role);
 
-        if (isAdmin || isManager) {
+        if (isOnline && (isAdmin || isManager)) {
             cardActions.setVisibility(View.VISIBLE);
             btnDelete.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
         }
 
-        if (isAdmin || isManager || isTechnician) {
+        if (isOnline && (isAdmin || isManager || isTechnician)) {
             cardUpdateHours.setVisibility(View.VISIBLE);
         }
 
