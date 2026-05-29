@@ -16,6 +16,7 @@ import com.example.cmms.data.remote.models.UpdateWorkOrderRequest;
 import com.example.cmms.data.remote.models.UpdateWorkOrderStatusRequest;
 import com.example.cmms.data.remote.models.WorkOrderResponse;
 import com.example.cmms.utils.NetworkUtils;
+import com.example.cmms.utils.NotificationHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +50,24 @@ public class WorkOrderRepository {
             public void onResponse(@NonNull Call<List<WorkOrderResponse>> call, @NonNull Response<List<WorkOrderResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<WorkOrderEntity> entities = mapWorkOrders(response.body());
+
+                    String currentUserId = new AuthRepository(context).getSavedUserId();
+
+                    for (WorkOrderEntity wo : entities) {
+                        if ("CRITICAL".equals(wo.getPriority()) && "NEW".equals(wo.getStatus())) {
+                            NotificationHelper.sendCriticalAlert(
+                                    context,
+                                    "Krytyczna awaria",
+                                    wo.getTitle()
+                            );
+                        }
+                        if (currentUserId != null
+                                && currentUserId.equals(wo.getAssignedToId())
+                                && "NEW".equals(wo.getStatus())) {
+                            NotificationHelper.sendWorkOrderAssignment(context, wo.getTitle());
+                        }
+                    }
+
                     executor.execute(() -> database.runInTransaction(() -> {
                         workOrderDao.deleteAll();
                         workOrderDao.insertAll(entities);
@@ -129,6 +148,19 @@ public class WorkOrderRepository {
             public void onResponse(@NonNull Call<List<WorkOrderResponse>> call, @NonNull Response<List<WorkOrderResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<WorkOrderEntity> entities = mapWorkOrders(response.body());
+
+                    String currentUserId = new AuthRepository(context).getSavedUserId();
+                    for (WorkOrderEntity wo : entities) {
+                        if ("CRITICAL".equals(wo.getPriority()) && "NEW".equals(wo.getStatus())) {
+                            NotificationHelper.sendCriticalAlert(context, "Krytyczna awaria", wo.getTitle());
+                        }
+                        if (currentUserId != null
+                                && currentUserId.equals(wo.getAssignedToId())
+                                && "NEW".equals(wo.getStatus())) {
+                            NotificationHelper.sendWorkOrderAssignment(context, wo.getTitle());
+                        }
+                    }
+
                     executor.execute(() -> database.runInTransaction(() -> {
                         workOrderDao.deleteAll();
                         workOrderDao.insertAll(entities);
