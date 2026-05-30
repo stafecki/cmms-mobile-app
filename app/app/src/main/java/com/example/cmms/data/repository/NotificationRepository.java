@@ -12,6 +12,9 @@ import com.example.cmms.data.local.entities.NotificationEntity;
 import com.example.cmms.data.remote.ApiClient;
 import com.example.cmms.data.remote.ApiService;
 import com.example.cmms.data.remote.models.NotificationResponse;
+import com.example.cmms.utils.NotificationHelper;
+
+import java.util.HashSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +47,22 @@ public class NotificationRepository {
             public void onResponse(@NonNull Call<List<NotificationResponse>> call, @NonNull Response<List<NotificationResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<NotificationEntity> entities = mapNotifications(response.body());
-                    executor.execute(() -> database.runInTransaction(() -> {
-                        notificationDao.deleteAll();
-                        notificationDao.insertAll(entities);
-                    }));
+                    executor.execute(() -> {
+                        HashSet<String> existingIds = new HashSet<>(notificationDao.getAllIds());
+                        for (NotificationEntity entity : entities) {
+                            if (!existingIds.contains(entity.getId()) && !entity.isRead()) {
+                                if (entity.getType() != null && entity.getType().contains("CRITICAL")) {
+                                    NotificationHelper.sendCriticalAlert(context, entity.getTitle(), entity.getMessage());
+                                } else {
+                                    NotificationHelper.sendWorkOrderAssignment(context, entity.getTitle());
+                                }
+                            }
+                        }
+                        database.runInTransaction(() -> {
+                            notificationDao.deleteAll();
+                            notificationDao.insertAll(entities);
+                        });
+                    });
                     Log.d(TAG, "Fetched " + entities.size() + " notifications from API");
                 } else {
                     Log.e(TAG, "getNotifications failed with code: " + response.code());
