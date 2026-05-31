@@ -49,7 +49,7 @@ public class NotificationHelper {
     public static void sendWorkOrderAssignment(Context context, String workOrderTitle) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ASSIGNMENTS)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("Nowe zlecenie do wykonania")
+                .setContentTitle("Nowe powiadomienie")
                 .setContentText(workOrderTitle)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
